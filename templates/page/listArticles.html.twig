@@ -1,0 +1,15 @@
+
+<main>
+
+    <h1>List Articles</h1>
+
+{% for pokemon in pokemons %}
+
+    <article>
+        <h2> {{ pokemon.title }} </h2>
+        <p> {{ pokemon.content }} </p>
+    </article>
+
+{% endfor %}
+
+</main>

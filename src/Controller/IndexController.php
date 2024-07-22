@@ -16,6 +16,8 @@ class IndexController extends AbstractController {
     // Elle permet de créer une route, c-à-d une nouvelle page sur notre appli. Quand l'url est appelée, la méthode placée dessous est exécutée.
     #[Route('/', name: 'home')]
     public function index() {
-       var_dump('hello');die;
+        // la méthode render vient de l'AbstractController
+        return $this->render('page/index.html.twig');
+      // var_dump('hello');die;
     }
 }
