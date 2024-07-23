@@ -1,15 +1,25 @@
 
-<main>
+{% extends "base.html.twig" %}
+
+{% block content %}
 
     <h1>List Articles</h1>
 
-{% for pokemon in pokemons %}
+    <div id="pokemons">
 
-    <article>
-        <h2> {{ pokemon.title }} </h2>
-        <p> {{ pokemon.content }} </p>
-    </article>
+        {% for pokemon in pokemons %}
 
-{% endfor %}
+            {% if pokemon.isPublished %}
 
-</main>
+            <article class="articlePokemon">
+                <h2> {{ pokemon.title }} </h2>
+                <p> {{ pokemon.content }} </p>
+            </article>
+
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+{% endblock %}
