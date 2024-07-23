@@ -21,6 +21,7 @@ class CategorieController extends AbstractController {
         ];
 
         // Appel de la méthode renderView pour l'affichage twig
+        // $this-> fait référence à une instance de classe. renderView est une méthode de la classe AbstractController.
         $html = $this->renderView('page/listCategories.html.twig', [
             'categories' => $categories
         ]);
