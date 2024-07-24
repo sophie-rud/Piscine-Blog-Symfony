@@ -11,8 +11,10 @@ class AgeController extends AbstractController {
 // Annotation : crée une nouvelle page dès que la fonction checkAge est appelée.
     #[Route('/checked', name: 'checked')]
     public function checkAge() {
-        // On stocke les super-globales dans la variable $request
+        // On récupère toutes les super-globales et symfony les stocke dans la variable $request
+        // Dans $request est stockée une instance de la classe Request.  |   :: est une méthode (statique)
         $request = Request::createFromGlobals();
+
 
         // Si la requête ne comporte pas le paramètre 'age' dans l'url, afficher la page du formulaire à compléter.
         if (!$request->query->has('age')) {
@@ -35,3 +37,5 @@ class AgeController extends AbstractController {
     }
 }
 
+
+// dump() très utile pour voir ce que contient une variable
