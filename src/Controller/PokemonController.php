@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 // Création d'un namespace, qui indique le chemin de la classe courante
 namespace App\Controller;
@@ -13,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 // Nouvelle classe CategorieController qui hérite de la classe AbstractController (elle hérite de toutes les propriétés et méthodes, exceptées celles en 'private').
 class PokemonController extends AbstractController {
 
-    private $pokemons;
+    private array $pokemons;
 
     public function __construct()
     {
@@ -118,11 +120,16 @@ class PokemonController extends AbstractController {
 
     // Annotation : crée une nouvelle page dès que la fonction showPokemon est appelée.
     #[Route('show-pokemon', name: 'show_pokemon')]
-    public function showPokemon() {
+    public function showPokemon(Request $request) {
 
         // On récupère toutes les super-globales et symfony les stocke dans la variable $request
         // Dans $request est stockée une instance de la classe Request.  |   :: est une méthode (statique)
-        $request = Request::createFromGlobals();
+        // En d'autres termes : Injection de dépendance : on demande à Symfony de créer une instance de la classe Request dans la variable $request.
+        // $request = Request::createFromGlobals();
+
+        $request = new Request($_GET, etc);
+        // est comme $request = new Request($_GET, etc). Si on utilse cette ligne il faut mettre Request $request en paramètre de la fonction : public function showPokemon(Request $request)
+
 
         // On récupère l'id dans d'url, on stocke cette donnée dans une variable
         $idPokemon = $request->query->get('id');
@@ -134,6 +141,7 @@ class PokemonController extends AbstractController {
         foreach ($this->pokemons as $this->pokemon) {
 
            if ($this->pokemon['id'] === (int)$idPokemon) {  /* OU if ($pokemon['id'] == 'idPokemon') */
+               /* Si le pokemon est trouvé, il est enregistré dans la variable $pokemonFound */
                $pokemonFound = $this->pokemon;
 
             }
