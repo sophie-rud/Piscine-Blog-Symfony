@@ -18,10 +18,10 @@ class PokemonRepository extends ServiceEntityRepository
 
     // On ajoute manuellement une fonction dans le repository de notre table pokemon
     public function findLikeTitle($search)
-    { // On crée une nouvelle instance de la classe createQueryBuilder
+    { // On appelle la méthode createQueryBuilder
         $queryBuilder = $this->createQueryBuilder('pokemon');
 
-        // On crée une requête de sélection vers la bdd
+        // On crée une requête sql avec la commande select
         $query = $queryBuilder->select('pokemon')
             // where = condition. Récupère tous les pokemons à condition que le titre du pokemon contienne les caractères de la recherche
             // Sécurisation de la recherche utilisateur :search. (: évite les injections sql).
