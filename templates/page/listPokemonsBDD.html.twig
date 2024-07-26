@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+
+{% block metatitle %} Show PokemonS
+{% endblock %}
+
+
+{% block content %}
+
+    <h1> List Pokemons BDD </h1>
+
+        <section id="pokemonsBdd">
+
+            {% for pokemonBdd in pokemonsBdd %}
+
+                <article class="artPokeBdd">
+
+                    <h2> {{ pokemonBdd.title }} </h2>
+                    <p> Description : {{ pokemonBdd.content }} </p>
+                    <p> Type : {{ pokemonBdd.type }} </p>
+
+                    <div class="pokepokemon">
+                        <img src="{{ pokemonBdd.image }}" />
+                    </div>
+
+                    <a href="{{ path('pokemon_by_id_db', { id : pokemonBdd.id }) }}"> Voir ce pokemon ! </a>
+
+
+                </article>
+
+
+            {% endfor %}
+
+        </section>
+
+
+{% endblock %}

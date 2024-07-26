@@ -1,12 +1,13 @@
 body {
     background-color: #faead0;
+    min-height: 100vh;
 }
 
 
 * {
     margin: 0;
     padding: 0;
-    font-family: "Josefin Sans", sans-serif;
+    font-family: "Acme", sans-serif;
 }
 
 /* --------------- Général --------------- */
@@ -48,8 +49,8 @@ header {
     background-image: url('../img/poke-unsplash.jpg');
     background-size: cover;
     background-color: rgba(255, 213, 88, 0.6);
-    background-position: right 50% top 60%;
-    height: 50vh;
+    background-position: right 50% top 35%;
+    height: 60vh;
     color: rgb(40, 70, 236);
     text-align: center;
 
@@ -148,6 +149,61 @@ main {
 #gandalf {
     width: 50%;
     margin: auto;
+}
+
+
+/* --------------- Pokemons BDD --------------- */
+
+#pokemonsBdd {
+    .artPokeBdd {
+        width: 50%;
+        background-color: #f8adab;
+        border-radius: 30px;
+        margin: 25px auto;
+        padding: 15px 25px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+
+        p {
+            color: #B0413E;
+            padding: 8px 0;
+        }
+
+        .pokepokemon {
+            width: 40%;
+            margin: auto;
+        }
+
+        a {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: coral;
+            padding: 8px;
+            border-radius: 10px;
+        }
+
+        a:hover {
+
+        }
+    }
+}
+
+
+/* --------------- searchPokemon --------------- */
+
+.searchBar {
+    width: 50%;
+    margin: auto;
+    background-color: #f8adab;
+    text-align: center;
+    padding: 20px 8px;
+    border-radius: 30px;
+}
+
+input {
+
 }
 
 

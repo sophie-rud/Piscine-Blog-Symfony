@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+
+{% block metatitle %} Show PokemonS
+{% endblock %}
+
+
+{% block content %}
+
+    <h1> List Pokemons BDD </h1>
+
+
+    <section id="pokemonsBdd">
+
+            <article class="artPokeBdd">
+
+                <h2> {{ pokemon.title }} </h2>
+                <p> Description : {{ pokemon.content }} </p>
+                <p> Type : {{ pokemon.type }} </p>
+
+                <div class="pokepokemon">
+                    <img src="{{ pokemon.image }}" />
+                </div>
+
+            </article>
+
+    </section>
+
+
+{% endblock %}

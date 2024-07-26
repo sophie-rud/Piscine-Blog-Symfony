@@ -1,0 +1,26 @@
+
+<main>
+
+    <h1> Product </h1>
+
+    <article>
+
+        <h2> {{ product.title }} </h2>
+        <p> Price : {{ product.price }} </p>
+        <p> Price reduction : {{ product.price_reduction }} </p>
+
+        <img src="{{ product.image }}">
+
+        <div>
+            <p>Catégories :</p>
+            {% for product in product.categories %}
+                <p> {{ product }} </p>
+            {% endfor %}
+        </div>
+
+    </article>
+
+
+
+
+</main>

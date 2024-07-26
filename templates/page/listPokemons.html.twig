@@ -20,7 +20,8 @@
 
                 <h2> {{ pokemon.title }} </h2>
                 <p> {{ pokemon.content }} </p>
-                <a href=" {{ path('show_pokemon') }}?id={{ pokemon.id }}"> Voir le pokemon </a>
+                {# <a href=" {{ path('show_pokemon') }}?id={{ pokemon.id }}"> Voir le pokemon </a> #}
+                <a href="{{ path('show_pokemon', {idPokemon: pokemon.id }) }}"> Voir le pokemon </a>
 
             </article>
 

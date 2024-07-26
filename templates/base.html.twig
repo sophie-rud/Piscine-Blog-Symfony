@@ -4,6 +4,9 @@
     <head>
         <meta charset="UTF-8">
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
         <meta name="viewport"
               content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 
@@ -22,8 +25,9 @@
                     <li><a href="{{ path("home") }}">Home</a></li>
                     <li><a href="{{ path("list_pokemons") }}">Pokemons</a></li>
                     <li class="logo"> <a href="http://localhost/piscine-blog/public/">
-                            <img src="{{ asset('img/otter-solid.png') }}" alt = logo> </a>
+                            <img src="{{ asset('img/autocollant-carapuce-pokemon-007.png') }}" alt = logo> </a>
                     </li>
+                    <li><a href="{{ path("pokemons_bdd") }}">Pokemons DB</a></li>
                     <li><a href="{{ path("checked") }}">Check</a></li>
                     <li><a href="{{ path('categorie') }}">Categories</a></li>
 
@@ -47,7 +51,7 @@
             <p> © La Piscine 2024 </p>
 
             <div class="logoFooter">
-                <img src="{{ asset('img/otter-solid.png') }}" alt="logo">
+                <img src="{{ asset('img/autocollant-carapuce-pokemon-007.png') }}" alt="logo">
             </div>
 
         </footer>

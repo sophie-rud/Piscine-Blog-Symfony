@@ -1,0 +1,32 @@
+
+<main>
+
+    <h1> List Products </h1>
+
+    {% for product in products %}
+
+        <h2> {{ product.title }} </h2>
+        <p> Price : {{ product.price }} </p>
+        <p> Price reduction : {{ product.price_reduction }} </p>
+
+        <img src="{{ product.image }}" />
+
+        <div>
+            <p>Catégories :</p>
+            {% for product in product.categories %}
+                <p> {{ product }} </p>
+            {% endfor %}
+        </div>
+
+        <a href="{{ path('show_product', { idProduct: product.id }) }}"> Voir ce produit ! </a>
+
+
+
+
+
+    {% endfor %}
+
+
+
+
+</main>

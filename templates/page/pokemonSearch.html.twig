@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+
+{% block metatitle %} Formulaire
+{% endblock %}
+
+
+{% block content %}
+
+    <h1>Rechercher un pokemon</h1>
+
+    <form method="post" class="searchBar">
+
+        <label> Quel pokemon cherchez-vous ?
+            <input type="text" name="title">
+        </label>
+
+        <input type="submit">
+
+    </form>
+
+
+        {% if pokemon %}
+
+            <section id="pokemonsBdd">
+
+                <article class="artPokeBdd">
+
+                    <h2> {{ pokemon.title }} </h2>
+                    <p> Description : {{ pokemon.content }} </p>
+                    <p> Type : {{ pokemon.type }} </p>
+
+                    <div class="pokepokemon">
+                        <img src="{{ pokemon.image }}"  alt="{{ pokemon.title }}" />
+                    </div>
+
+                </article>
+
+            </section>
+
+        {% endif %}
+
+
+{% endblock %}

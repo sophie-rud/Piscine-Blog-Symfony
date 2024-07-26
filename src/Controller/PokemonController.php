@@ -7,10 +7,13 @@ declare(strict_types=1);
 namespace App\Controller;
 
 // On appelle le namespace des classes Symfony qu'on utilise, Symfony fera le require vers ces classes
+use App\Repository\PokemonRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+
+
 
 // Nouvelle classe CategorieController qui hérite de la classe AbstractController (elle hérite de toutes les propriétés et méthodes, exceptées celles en 'private').
 class PokemonController extends AbstractController {
@@ -119,39 +122,99 @@ class PokemonController extends AbstractController {
 
 
     // Annotation : crée une nouvelle page dès que la fonction showPokemon est appelée.
-    #[Route('show-pokemon', name: 'show_pokemon')]
-    public function showPokemon(Request $request) {
+    #[Route('show-pokemon/{idPokemon}', name: 'show_pokemon')]
+    public function showPokemon($idPokemon): Response {
 
         // On récupère toutes les super-globales et symfony les stocke dans la variable $request
         // Dans $request est stockée une instance de la classe Request.  |   :: est une méthode (statique)
         // En d'autres termes : Injection de dépendance : on demande à Symfony de créer une instance de la classe Request dans la variable $request.
         // $request = Request::createFromGlobals();
 
-        $request = new Request($_GET, etc);
+        /* $request = new Request($_GET, etc);
         // est comme $request = new Request($_GET, etc). Si on utilse cette ligne il faut mettre Request $request en paramètre de la fonction : public function showPokemon(Request $request)
 
 
         // On récupère l'id dans d'url, on stocke cette donnée dans une variable
-        $idPokemon = $request->query->get('id');
+        $idPokemon = $request->query->get('id'); */
 
 
         $pokemonFound = null;
 
         // On fait un foreach sur le tableau pokemon pour trouver, dans le tableau $pokemon, le pokemon correspondant à l'id' recherché.
-        foreach ($this->pokemons as $this->pokemon) {
+        foreach ($this->pokemons as $pokemon) {
 
-           if ($this->pokemon['id'] === (int)$idPokemon) {  /* OU if ($pokemon['id'] == 'idPokemon') */
+           if ($pokemon['id'] === (int)$idPokemon) {  /* OU if ($pokemon['id'] == 'idPokemon') */
                /* Si le pokemon est trouvé, il est enregistré dans la variable $pokemonFound */
-               $pokemonFound = $this->pokemon;
+               $pokemonFound = $pokemon;
 
             }
         }
 
         // On retourne le fichier twig qui affiche le pokemon correspondant a l'id recherché
-        return $this->render('page/show-pokemon.html.twig', [
+        return $this->render('page/showPokemon.html.twig', [
             'pokemon' => $pokemonFound
         ]);
 
     }
+
+
+    #[Route('pokemons-bdd/', name: 'pokemons_bdd')]
+    public function listPokemonsBdd(PokemonRepository $pokemonRepository): Response
+    {
+       $pokemonsBdd = $pokemonRepository->findAll();
+
+       return $this->render('page/listPokemonsBDD.html.twig', [
+           'pokemonsBdd' => $pokemonsBdd
+       ]);
+
+    }
+
+
+
+    // Route est une classe
+    // /{id} : wild card
+    #[Route('/pokemon-db/{id}', name: 'pokemon_by_id_db')]
+    // Response : typage (pas obligatoire, mais conseillé)
+    public function showPokemonById(int $id, PokemonRepository $pokemonRepository): Response {
+
+        $pokemon = $pokemonRepository->find($id);
+
+        return $this->render('page/showPokemonDb.html.twig', [
+            'pokemon' => $pokemon
+        ]);
+    }
+
+    #[Route('/pokemon-db-search', name: 'search_pokemon')]
+    // On passe en paramètres de la fonction les classes Request et PokemonRepository, Symfony va instancier ces classes
+    public function searchPokemon(Request $request, PokemonRepository $pokemonRepository):Response {
+
+        $pokemonFound = null;
+
+        if ($request->request->has('title')) {
+
+            // On stocke dans la variable $titleSearched le paramètre récupéré dans le formulaire
+            $titleSearched = $request->request->get('title');
+            // findOneBy existe déjà dans tous les repository
+            $pokemonFound = $pokemonRepository->findOneBy(['title' => $titleSearched]);
+
+                // Si aucun pokemon n'a été trouvé, on affiche une page erreur 404
+                if(!$pokemonFound) {
+                    $html = $this->renderView('page/404.html.twig');
+                    return new Response($html, 404);
+                }
+        }
+
+
+         // Si pokemon trouvé, on affiche la page du pokemon trouvé
+         return $this->render('page/pokemonSearch.html.twig', [
+             'pokemon' => $pokemonFound
+         ]);
+
+    }
+
+
+
+
+
 }
 
