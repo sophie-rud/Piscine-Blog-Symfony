@@ -32,7 +32,7 @@ class PokemonRepository extends ServiceEntityRepository
             ->getQuery();
 
         // La requête nous retourne un tableau de résultats, qu'on stocke dans la variable $pokemons.
-        $pokemons = $query->getArrayResult();
+        $pokemons = $query->getResult();
 
         return $pokemons;
     }
