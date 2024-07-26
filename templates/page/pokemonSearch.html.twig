@@ -19,8 +19,8 @@
 
     </form>
 
-
-        {% if pokemon %}
+{# Le résultat de notre recherche est un tableau. On fait un for pour afficher les résultats. #}
+        {% for pokemon in pokemons %}
 
             <section id="pokemonsBdd">
 
@@ -38,7 +38,7 @@
 
             </section>
 
-        {% endif %}
+        {% endfor %}
 
 
 {% endblock %}

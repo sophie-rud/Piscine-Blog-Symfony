@@ -188,14 +188,14 @@ class PokemonController extends AbstractController {
     // On passe en paramètres de la fonction les classes Request et PokemonRepository, Symfony va instancier ces classes
     public function searchPokemon(Request $request, PokemonRepository $pokemonRepository):Response {
 
-        $pokemonFound = null;
-
+        $pokemonFound = [];
+        // Si la requête post comporte un paramètre en title, ...
         if ($request->request->has('title')) {
 
             // On stocke dans la variable $titleSearched le paramètre récupéré dans le formulaire
             $titleSearched = $request->request->get('title');
-            // findOneBy existe déjà dans tous les repository
-            $pokemonFound = $pokemonRepository->findOneBy(['title' => $titleSearched]);
+            // On appelle findLikeTitle qu'on a céé dans le PokemonRepository, qui permet de faire une recherche souple sur les titre des pokemons
+            $pokemonFound = $pokemonRepository->findLikeTitle($titleSearched);
 
                 // Si aucun pokemon n'a été trouvé, on affiche une page erreur 404
                 if(!$pokemonFound) {
@@ -207,7 +207,7 @@ class PokemonController extends AbstractController {
 
          // Si pokemon trouvé, on affiche la page du pokemon trouvé
          return $this->render('page/pokemonSearch.html.twig', [
-             'pokemon' => $pokemonFound
+             'pokemons' => $pokemonFound
          ]);
 
     }
