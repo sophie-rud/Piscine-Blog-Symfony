@@ -16,14 +16,16 @@
                 <article class="artPokeBdd">
 
                     <h2> {{ pokemonBdd.title }} </h2>
-                    <p> Description : {{ pokemonBdd.content }} </p>
-                    <p> Type : {{ pokemonBdd.type }} </p>
+                    <p> {{ pokemonBdd.content }} </p>
+                    <p> Type : <br> {{ pokemonBdd.type }} </p>
 
                     <div class="pokepokemon">
                         <img src="{{ pokemonBdd.image }}" />
                     </div>
 
                     <a href="{{ path('pokemon_by_id_db', { id : pokemonBdd.id }) }}"> Voir ce pokemon ! </a>
+                    <a href="{{ path('pokemon_delete', { id : pokemonBdd.id }) }}"> Supprimer ce pokemon...</a>
+
 
 
                 </article>

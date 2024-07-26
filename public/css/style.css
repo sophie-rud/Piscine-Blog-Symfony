@@ -18,7 +18,8 @@ img {
 h1 {
     text-align: center;
     margin: 2% 0;
-    color: rgb(40, 70, 236);
+    color: #84CEE6;
+    text-shadow: 2px 2px #2563EB;
     text-transform: uppercase;
 }
 
@@ -27,6 +28,7 @@ h2 {
     text-align: center;
     padding: 15px 0;
     text-transform: uppercase;
+    color: #23708D;
 }
 
 h3 {
@@ -50,7 +52,7 @@ header {
     background-size: cover;
     background-color: rgba(255, 213, 88, 0.6);
     background-position: right 50% top 35%;
-    height: 60vh;
+    height: 70vh;
     color: rgb(40, 70, 236);
     text-align: center;
 
@@ -89,7 +91,7 @@ li {
 a {
     text-decoration: none;
     /* color: rgb(40, 70, 236); */
-    color: #AD2213;
+    color: tomato;
     font-size: 25px;
     font-weight: bold;
     text-align: center;
@@ -182,10 +184,12 @@ main {
             color: coral;
             padding: 8px;
             border-radius: 10px;
+            margin: 10px 0;
         }
 
         a:hover {
-
+            background-color: tomato;
+            color: #EDE9FE;
         }
     }
 }
@@ -203,10 +207,16 @@ main {
 }
 
 input {
-
+    background-color: linen;
 }
 
 
+/* --------------- 404.html.twig --------------- */
+
+.error404 {
+    width: 50%;
+    margin: auto;
+}
 
 
 /* --------------- FOOTER --------------- */

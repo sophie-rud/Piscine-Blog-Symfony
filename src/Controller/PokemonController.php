@@ -7,7 +7,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 // On appelle le namespace des classes Symfony qu'on utilise, Symfony fera le require vers ces classes
+use App\Entity\Pokemon;
 use App\Repository\PokemonRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -174,7 +176,7 @@ class PokemonController extends AbstractController {
     // Route est une classe
     // /{id} : wild card
     #[Route('/pokemon-db/{id}', name: 'pokemon_by_id_db')]
-    // Response : typage (pas obligatoire, mais conseillé)
+    // Response : typage. : Response indique qu'avec cette méthode, le controller va envoyer une page http ou faire une redirection (typage : pas obligatoire, mais conseillé)
     public function showPokemonById(int $id, PokemonRepository $pokemonRepository): Response {
 
         $pokemon = $pokemonRepository->find($id);
@@ -213,8 +215,57 @@ class PokemonController extends AbstractController {
     }
 
 
+    // Repository : pour les requêtes qui ne modifient pas la BDD (ex : select...)
+    // EntityManager : pour les requêtes qui modifient la BDD (ex : delete...)
+    #[Route('/pokemons/delete/{id}', name: 'pokemon_delete')]
+public function deletePokemon(int $id, PokemonRepository $pokemonRepository, EntityManagerInterface $entityManager): Response {
+
+        $pokemon = $pokemonRepository->find($id);
+
+        if (!$pokemon) {
+            $html = $this->renderView('page/404.html.twig');
+            return new Response($html, 404);
+        }
+
+        // On utilise la classe EntityManager pour PREPARER la requête SQL delete (mais on ne l'exécute pas tout de suite).
+        $entityManager->remove($pokemon);
+        // On exécute la requête SQL
+        $entityManager->flush();
 
 
+        return $this->redirectToRoute('pokemons_bdd');
+    }
+
+
+
+    #[Route('/pokemons/insert/without-form', name: 'pokemon_insert')]
+    public function insertPokemon(EntityManagerInterface $entityManager): Response {
+
+        // On instancie la classe de l'entité Pokemon
+        // On remplit toutes ses propriétés (soit avec le constructor, qu'il faut créé dans la classe Pokemon (dans l'entité Pokemon (Pokemon.php)), soit avec les setters)
+        $pokemon = new Pokemon(
+            'Roucoups',
+            'Roucoups est l évolution de Roucool au niveau 18, et il évolue en Roucarnage à partir du niveau 36',
+            'https://www.pokepedia.fr/images/thumb/d/dc/Roucoups-RFVF.png/1200px-Roucoups-RFVF.png',
+            'vol'
+        );
+
+        // est équivalent à :
+        //$pokemon = new Pokemon();
+        //$pokemon->setTitle('Roucoups');
+        //$pokemon->setDescription('Roucoups est l évolution de Roucool au niveau 18, et il évolue en Roucarnage à partir du niveau 36');
+        //$pokemon->setImage('https://www.pokepedia.fr/images/thumb/d/dc/Roucoups-RFVF.png/1200px-Roucoups-RFVF.png');
+
+
+            // On prépare la requête sql (persist = insérer)
+            $entityManager->persist($pokemon);
+            // On exécute la requête
+            $entityManager->flush();
+
+        return $this->render('page/pokemonInsert_withoutForm.html.twig', [
+            'pokemon' => $pokemon
+    ]);
+    }
 
 }
 

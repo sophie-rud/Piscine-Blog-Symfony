@@ -30,6 +30,15 @@ class Pokemon
         return $this->id;
     }
 
+
+    public function __construct($title, $content, $image, $type)
+    {
+        $this->title = $title;
+        $this->content = $content;
+        $this->image = $image;
+        $this->type = $type;
+    }
+
     public function getTitle(): ?string
     {
         return $this->title;
