@@ -194,7 +194,8 @@ class PokemonController extends AbstractController {
         // Si la requête post comporte un paramètre en title, ...
         if ($request->request->has('title')) {
 
-            // On stocke dans la variable $titleSearched le paramètre récupéré dans le formulaire
+            // On stocke dans la variable $titleSearched le paramètre récupéré dans le formulaire.
+            // ->request permet de récupérer les données en post. ->get() indique qu'on veut récupérer les données (rien à voir avec GET et POST).
             $titleSearched = $request->request->get('title');
             // On appelle findLikeTitle qu'on a céé dans le PokemonRepository, qui permet de faire une recherche souple sur les titre des pokemons
             $pokemonFound = $pokemonRepository->findLikeTitle($titleSearched);
@@ -238,31 +239,49 @@ public function deletePokemon(int $id, PokemonRepository $pokemonRepository, Ent
 
 
 
-    #[Route('/pokemons/insert/without-form', name: 'pokemon_insert')]
-    public function insertPokemon(EntityManagerInterface $entityManager): Response {
+    #[Route('/pokemons/insert/form', name: 'pokemon_insert')]
+    public function insertPokemon(EntityManagerInterface $entityManager, Request $request) {
 
+         // Méthode avec __construct() dans l'entité :
         // On instancie la classe de l'entité Pokemon
         // On remplit toutes ses propriétés (soit avec le constructor, qu'il faut créé dans la classe Pokemon (dans l'entité Pokemon (Pokemon.php)), soit avec les setters)
-        $pokemon = new Pokemon(
+        /* $pokemon = new Pokemon(
             'Roucoups',
             'Roucoups est l évolution de Roucool au niveau 18, et il évolue en Roucarnage à partir du niveau 36',
-            'https://www.pokepedia.fr/images/thumb/d/dc/Roucoups-RFVF.png/1200px-Roucoups-RFVF.png',
             'vol'
-        );
+        ); */
 
-        // est équivalent à :
-        //$pokemon = new Pokemon();
-        //$pokemon->setTitle('Roucoups');
-        //$pokemon->setDescription('Roucoups est l évolution de Roucool au niveau 18, et il évolue en Roucarnage à partir du niveau 36');
-        //$pokemon->setImage('https://www.pokepedia.fr/images/thumb/d/dc/Roucoups-RFVF.png/1200px-Roucoups-RFVF.png');
+        // On initialise la variable $pokemon.
+        $pokemon = null;
+
+        // On vérifie si le formulaire a été envoyé (si la requête est en POST)
+        if ($request->getMethod() === 'POST') {
+            // On récupère les données entrées dans le forumlaire par l'utilisateur
+            $title = $request->request->get('title');
+            $content = $request->request->get('content');
+            $image = $request->files->get('image');
+            $type = $request->request->get('type');
+
+            // On instancie la classe Pokemon
+            $pokemon = new Pokemon();
+
+            // Avec les setters, on remplit les propriétés de la classe Pokemon avec les données entrées dans le formulaire.
+            $pokemon->setTitle($title);
+            $pokemon->setContent($content);
+            $pokemon->setImage($image);
+            $pokemon->setType($type);
 
 
+            // Avec la classe EntityManager,
             // On prépare la requête sql (persist = insérer)
             $entityManager->persist($pokemon);
             // On exécute la requête
             $entityManager->flush();
 
-        return $this->render('page/pokemonInsert_withoutForm.html.twig', [
+        }
+
+        // On retourne une réponse en http (avec le html de notre page pokemonInsert)
+        return $this->render('page/pokemonInsert.html.twig', [
             'pokemon' => $pokemon
     ]);
     }

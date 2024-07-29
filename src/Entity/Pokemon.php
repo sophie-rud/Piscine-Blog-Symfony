@@ -31,13 +31,13 @@ class Pokemon
     }
 
 
-    public function __construct($title, $content, $image, $type)
+    /* public function __construct($title, $content, $image, $type)
     {
         $this->title = $title;
         $this->content = $content;
         $this->image = $image;
         $this->type = $type;
-    }
+    } */
 
     public function getTitle(): ?string
     {
