@@ -8,6 +8,7 @@ namespace App\Controller;
 
 // On appelle le namespace des classes Symfony qu'on utilise, Symfony fera le require vers ces classes
 use App\Entity\Pokemon;
+use App\Form\PokemonBuilderType;
 use App\Repository\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -262,7 +263,7 @@ public function deletePokemon(int $id, PokemonRepository $pokemonRepository, Ent
             $image = $request->files->get('image');
             $type = $request->request->get('type');
 
-            // On instancie la classe Pokemon
+            // On instancie la classe Pokemon, et on stocke cette nouvelle instance dans la variable $pokemon
             $pokemon = new Pokemon();
 
             // Avec les setters, on remplit les propriétés de la classe Pokemon avec les données entrées dans le formulaire.
@@ -284,6 +285,37 @@ public function deletePokemon(int $id, PokemonRepository $pokemonRepository, Ent
         return $this->render('page/pokemonInsert.html.twig', [
             'pokemon' => $pokemon
     ]);
+    }
+
+
+
+    #[Route('/pokemons/insert/form-builder', name: 'pokemon_insert_form_builder')]
+    public function insertPokemonFormBuilder(PokemonRepository $pokemonRepository, Request $request, EntityManagerInterface $entityManager) {
+        // D'abord on crée une classe de "gabarit de formulaire HTML" (ici PokemonBuilderType) avec : php bin/console make:form
+
+
+        // On instancie la classe Pokemon, on stocke la nouvelle instance dans la variable
+        $pokemon = new Pokemon();
+
+        // On génère une instance de la classe de gabarit de formulaire et on la lie avec l'entité Pokemon
+        $pokemonForm = $this->createForm(PokemonBuilderType::class, $pokemon);
+
+        // On lie le formulaire à la requête
+        // gère la récupération des données et les stocke dans l'entité
+        $pokemonForm->handleRequest($request);
+
+        // Si le formulaire est soumis (envoyé) et que les données sont valides
+        if ($pokemonForm->isSubmitted() && $pokemonForm->isValid()) {
+            // On prépare et on exécute la requête
+            $entityManager->persist($pokemon);
+            $entityManager->flush();
+        }
+
+        // On retourne une réponse http (avec le fichier html du formulaire)
+        return $this->render('page/insertPokemon_formBuilder.html.twig', [
+            'pokemonForm' => $pokemonForm->createView()
+        ]);
+
     }
 
 }

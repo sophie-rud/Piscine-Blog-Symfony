@@ -1,0 +1,17 @@
+{%  extends 'base.html.twig' %}
+
+{% block metatitle %} Pokemon form builder
+{% endblock %}
+
+
+{% block content %}
+
+    {{ form(pokemonForm) }}
+
+
+    {% if app.request.method == 'POST' %}
+        <p> Le pokemon a bien été créé ! </p>
+    {% endif %}
+
+
+{% endblock %}
