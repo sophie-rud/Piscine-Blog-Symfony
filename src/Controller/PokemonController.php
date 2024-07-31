@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
 // Nouvelle classe CategorieController qui hérite de la classe AbstractController (elle hérite de toutes les propriétés et méthodes, exceptées celles en 'private').
@@ -290,7 +290,7 @@ public function deletePokemon(int $id, PokemonRepository $pokemonRepository, Ent
 
 
     #[Route('/pokemons/insert/form-builder', name: 'pokemon_insert_form_builder')]
-    public function insertPokemonFormBuilder(PokemonRepository $pokemonRepository, Request $request, EntityManagerInterface $entityManager) {
+    public function insertPokemonFormBuilder(Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator): Response {
         // D'abord on crée une classe de "gabarit de formulaire HTML" (ici PokemonBuilderType) avec : php bin/console make:form
 
 
@@ -298,25 +298,58 @@ public function deletePokemon(int $id, PokemonRepository $pokemonRepository, Ent
         $pokemon = new Pokemon();
 
         // On génère une instance de la classe de gabarit de formulaire et on la lie avec l'entité Pokemon
+        // $pokemonForm : variable qui contient l'instance de formulaire
         $pokemonForm = $this->createForm(PokemonBuilderType::class, $pokemon);
 
         // On lie le formulaire à la requête
         // gère la récupération des données et les stocke dans l'entité
+
         $pokemonForm->handleRequest($request);
 
-        // Si le formulaire est soumis (envoyé) et que les données sont valides
+        // Si le formulaire est soumis (envoyé) et que les données sont valides (c-à-d que les données entrées respectent les contraintes appliquées sur les champs de l'entité (dans pokemon.php)).
         if ($pokemonForm->isSubmitted() && $pokemonForm->isValid()) {
-            // On prépare et on exécute la requête
+            // On prépare et on exécute la requête / (ou les requêtes, qu'on exécutera en une fois avec flush)
             $entityManager->persist($pokemon);
             $entityManager->flush();
         }
 
-        // On retourne une réponse http (avec le fichier html du formulaire)
+        // On retourne une réponse http (avec le fichier html du formulaire), on enregistre en bdd
         return $this->render('page/insertPokemon_formBuilder.html.twig', [
             'pokemonForm' => $pokemonForm->createView()
         ]);
 
     }
+
+
+    #[Route('/pokemons/update/{id}', name: 'pokemon_update')]
+    public function updatePokemon(int $id, PokemonRepository $pokemonRepository, Request $request, EntityManagerInterface $entityManager): Response {
+
+        // On stocke le pokemon qui correspond a l'id recherché dans la variable $pokemon
+        $pokemon = $pokemonRepository->find($id);
+
+        // On génère une instance de la classe de gabarit de formulaire et on la lie avec l'entité Pokemon
+        // $pokemonUpdateForm contient l'instance de formulaire créée
+        $pokemonUpdateForm = $this->createForm(PokemonBuilderType::class, $pokemon);
+
+        // On lie le formulaire à la requête
+        // $request gère la récupération des données en POST
+        $pokemonUpdateForm->handleRequest($request);
+
+        // Si le formulaire est soumis (posté) et que les données soumises sont valides, c-à-d qu'elles respectent les contraintes passées dans les champs de l'entité,
+        if ($pokemonUpdateForm->isSubmitted() && $pokemonUpdateForm->isValid()) {
+            // on prépare la requête d'enregistrement des données
+            $entityManager->persist($pokemon);
+            // et on exécute la requête
+            $entityManager->flush();
+        }
+
+        // On retourne une réponse http
+        $pokemonUpdateFormView= $pokemonUpdateForm->createView();
+        return $this->render('page/updatePokemon.html.twig', [
+            'pokemonUpdateForm' => $pokemonUpdateFormView
+        ]);
+    }
+
 
 }
 

@@ -19,11 +19,11 @@
 
         </div>
 
-
         {{ form_row(pokemonForm.content) }}
         {{ form_row(pokemonForm.image) }}
         {{ form_row(pokemonForm.type) }}
 
+        {# se base sur les paramètres entrés dans le PokemonTypeBuilder (qui lui se base sur les colonnes de l'entité en bdd). | ->add('valider', SubmitType::class) #}
         {{ form_row(pokemonForm.valider) }}
 
     {{ form_end(pokemonForm) }}

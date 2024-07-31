@@ -4,6 +4,10 @@ namespace App\Entity;
 
 use App\Repository\PokemonRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
+
 
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
 class Pokemon
@@ -14,6 +18,7 @@ class Pokemon
     private int $id;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 3, minMessage: 'Minimum 2 caractères')]
     private string $title;
 
     #[ORM\Column(length: 255, nullable: true)]

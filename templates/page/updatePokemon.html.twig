@@ -1,0 +1,31 @@
+{%  extends 'base.html.twig' %}
+
+{% block metatitle %} Pokemon update
+{% endblock %}
+
+
+{% block content %}
+
+    {% if app.request.method == 'POST' %}
+        <p> Le pokemon a été modifié ! </p>
+    {% endif %}
+
+    {{ form_start(pokemonUpdateForm) }}
+
+
+    <div class="test">
+
+        {{ form_row(pokemonUpdateForm.title) }}
+
+    </div>
+
+    {{ form_row(pokemonUpdateForm.content) }}
+    {{ form_row(pokemonUpdateForm.image) }}
+    {{ form_row(pokemonUpdateForm.type) }}
+
+    {# se base sur les paramètres entrés dans le PokemonTypeBuilder (qui lui se base sur les colonnes de l'entité en bdd). | ->add('valider', SubmitType::class) #}
+    {{ form_row(pokemonUpdateForm.valider) }}
+
+    {{ form_end(pokemonUpdateForm) }}
+
+{% endblock %}
