@@ -325,6 +325,7 @@ public function deletePokemon(int $id, PokemonRepository $pokemonRepository, Ent
     public function updatePokemon(int $id, PokemonRepository $pokemonRepository, Request $request, EntityManagerInterface $entityManager): Response {
 
         // On stocke le pokemon qui correspond a l'id recherché dans la variable $pokemon
+        // gère tout seul les injections sql (sécurité)
         $pokemon = $pokemonRepository->find($id);
 
         // On génère une instance de la classe de gabarit de formulaire et on la lie avec l'entité Pokemon
